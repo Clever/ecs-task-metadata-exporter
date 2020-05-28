@@ -1,0 +1,8 @@
+env:
+- PORT
+resources:
+  cpu: 0.1
+  max_mem: 0.1
+shepherds:
+- "taylor.sutton@clever.com"
+team: "eng-infra"
