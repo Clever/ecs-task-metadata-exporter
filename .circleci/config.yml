@@ -48,16 +48,9 @@ jobs:
         name: Set up CircleCI artifacts directories
     - run: make test
 
-  deploy:
-    executor: common-executor
-    steps:
-    - clone-ci-scripts
-    - run: if [ "${CIRCLE_BRANCH}" == "master" ]; then ../ci-scripts/circleci/dapple-deploy $DAPPLE_URL $DAPPLE_USER $DAPPLE_PASS $APP_NAME clever-dev no-confirm-deploy; fi;
-    - run: if [ "${CIRCLE_BRANCH}" == "master" ]; then ../ci-scripts/circleci/dapple-deploy $DAPPLE_URL $DAPPLE_USER $DAPPLE_PASS $APP_NAME production confirm-then-deploy; fi;
-
 workflows:
   version: 2.1
-  build_test_publish_deploy:
+  build_test_publish:
     jobs:
     - build
     - unit-test:
@@ -66,7 +59,3 @@ workflows:
     - publish:
         requires:
         - build
-    - deploy:
-        requires:
-        - unit-test
-        - publish

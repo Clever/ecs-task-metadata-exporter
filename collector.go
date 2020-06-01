@@ -30,6 +30,7 @@ func NewCollector(source data.Source, l logger.KayveeLogger) prometheus.Collecto
 
 func (c collector) Describe(ch chan<- *prometheus.Desc) {
 	// By construction, no metrics will ever change, but at describe time, we haven't inspected the metadata yet, so we don't have the full list
+	prometheus.DescribeByCollect(c, ch)
 }
 
 func (c collector) Collect(ch chan<- prometheus.Metric) {

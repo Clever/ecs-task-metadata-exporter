@@ -71,14 +71,7 @@ func cpuUsage(stats types.StatsJSON) float64 {
 	// When asking for stats, it gives two sets of those nanosecond totals, a newer one under stats.CPUStats and an older one under stats.PreCPUStats.
 	// (Pre is for previous. Where the previous data comes from I'm not sure.)
 	// Thus, we can calculate how much CPU each container is using as a fraction of the total CPU used on the host.
-	// TODO I'm a little confused as to how the number of CPUs comes into play here...
-	//   For example, the `docker stats` command multiplies by the number of CPUs:
-	//   https://github.com/docker/cli/blob/19.03/cli/command/container/stats_helpers.go#L180
-	//   Spaced-Out/ecs-container-exporter instead of multipling, DIVIDES by online cpus:
-	//   https://github.com/Spaced-Out/ecs-container-exporter/commit/c26434be7239207e8e34f95964c568fc1d244f39
-	//   claiming that doing it this way lets it be an average among CPUs.
-	//   That seems wrong to me; assuming system_cpu is total among all CPUs, we can divide total (among all CPUs) container usage by total system usage to get our average
-
+	// All of these numbers are totals over all the CPUs on the system, so the number of CPUs doesn't come into play
 	systemDelta := float64(stats.CPUStats.SystemUsage) - float64(stats.PreCPUStats.SystemUsage)
 	containerDelta := float64(stats.CPUStats.CPUUsage.TotalUsage) - float64(stats.PreCPUStats.CPUUsage.TotalUsage)
 
