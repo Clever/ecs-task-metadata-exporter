@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -23,7 +24,7 @@ const (
 	ECSMetadataURIV3Var = "ECS_CONTAINER_METADATA_URI"
 )
 
-const defaultPort = "9639"
+const defaultPort = "9659"
 
 var mainLogger = logger.New("ecs-task-metadata-exporter")
 
@@ -31,6 +32,19 @@ func main() {
 	port := defaultPort
 	if portStr, ok := os.LookupEnv("PORT"); ok {
 		port = portStr
+	}
+	if logFields, ok := os.LookupEnv("ADDITIONAL_LOG_FIELDS"); ok {
+		var fields map[string]string
+		if err := json.Unmarshal([]byte(logFields), &fields); err != nil {
+			mainLogger.WarnD("bad-additional-log-fields", logger.M{
+				"error":                 fmt.Sprintf("decoding ADDITIONAL_LOG_FIELDS: %v", err),
+				"ADDITIONAL_LOG_FIELDS": logFields,
+			})
+		} else {
+			for k, v := range fields {
+				mainLogger.AddContext(k, v)
+			}
+		}
 	}
 
 	var endpoint string
