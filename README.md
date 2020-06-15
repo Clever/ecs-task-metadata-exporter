@@ -32,7 +32,10 @@ In some ways, most of these labels are against the spirit of [Target labels, not
 
 ## Configuration
 
-Right now the only knob available to turn is the port on which it will listen for HTTP GET requests to the `/metrics` endpoint. It can be configured by the `PORT` environment variable. The current default is 9639. If that port is still free when this is a tiny bit more mature, that will become locked in at https://github.com/prometheus/prometheus/wiki/Default-port-allocations .
+Configuration is in the form of environment variables, as they are easy to provide to the container via the task definition when deploying to ECS.
+
+- `PORT`: sets the port on which it will listen for HTTP GET requests to the `/metrics` endpoint. The default is 9659, as listed on https://github.com/prometheus/prometheus/wiki/Default-port-allocations .
+- `ADDITIONAL_LOG_FIELDS`: add key:value pairs to the logs emitted. It should be valid JSON with values strings. If it is invalid, it will be ignored with a warning. It can be useful for configuring with information about the container it is being deployed with, for example.
 
 ## Developing
 
