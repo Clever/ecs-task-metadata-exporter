@@ -29,7 +29,7 @@ type TaskMetadata struct {
 	Revision           string
 	DesiredStatus      string
 	KnownStatus        string
-	Limits             *Limits // Omitted if there are no limits
+	Limits             *Limits // There may not be limits on the task
 	PullStartedAt      time.Time
 	PullStoppedAt      time.Time
 	AvailabilityZone   *string // Only available on Fargate platform version 1.4.0
@@ -49,18 +49,33 @@ type ContainerMetadata struct {
 	Labels        map[string]string
 	DesiredStatus string
 	KnownStatus   string
-	Limits        *Limits // Omitted if there are no limits
+	Limits        *Limits `json:",omitempty"` // Containers may not have individual limits
 	CreatedAt     time.Time
 	StartedAt     time.Time
 	Type          string
-	// TODO Networks
+	Networks      []Network
 }
 
 // Limits is the limits of a container or the whole task
 // Only the limits that have been set are non-nil
 type Limits struct {
-	CPU    *float64
-	Memory *uint64
+	CPU    *float64 `json:",omitempty"`
+	Memory *uint64  `json:",omitempty"`
+}
+
+// Network is the network part of a single container's metadata, as returned by /task
+// The exact format of this field is not well defined by AWS, and some fields may or may not be present depending on endpoint version
+// As such, all fields are optional to distinguish present vs zero value.
+type Network struct {
+	NetworkMode              *string  `json:",omitempty"`
+	IPv4Addresses            []string `json:",omitempty"`
+	AttachmentIndex          *int     `json:",omitempty"`
+	IPv4SubnetCIDRBlock      *string  `json:",omitempty"`
+	MACAddress               *string  `json:",omitempty"`
+	DomainNameServers        []string `json:",omitempty"`
+	DomainNameSearchList     []string `json:",omitempty"`
+	PrivateDNSName           *string  `json:",omitempty"`
+	SubnetGatewayIpv4Address *string  `json:",omitempty"`
 }
 
 // NewMetadataEndpointSource constructs a Source from the base URI to use as if it is the ECS task metadata URI

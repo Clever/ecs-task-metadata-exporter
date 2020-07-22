@@ -56,6 +56,12 @@ func TestMetadataEndpointSource(t *testing.T) {
 					CreatedAt:     mustParseTime(time.RFC3339, "2018-02-01T20:55:08.366329616Z"),
 					StartedAt:     mustParseTime(time.RFC3339, "2018-02-01T20:55:09.058354915Z"),
 					Type:          "CNI_PAUSE",
+					Networks: []Network{
+						{
+							NetworkMode:   swag.String("awsvpc"),
+							IPv4Addresses: []string{"10.0.2.106"},
+						},
+					},
 				},
 				ContainerMetadata{
 					DockerID:   "43481a6ce4842eec8fe72fc28500c6b52edcc0917f105b83379f88cac1ff3946",
@@ -76,6 +82,12 @@ func TestMetadataEndpointSource(t *testing.T) {
 					CreatedAt:     mustParseTime(time.RFC3339, "2018-02-01T20:55:10.554941919Z"),
 					StartedAt:     mustParseTime(time.RFC3339, "2018-02-01T20:55:11.064236631Z"),
 					Type:          "NORMAL",
+					Networks: []Network{
+						{
+							NetworkMode:   swag.String("awsvpc"),
+							IPv4Addresses: []string{"10.0.2.106"},
+						},
+					},
 				},
 			},
 		}
