@@ -78,6 +78,10 @@ func main() {
 		ErrorLog: kayveePrintlnLogger{l: mainLogger, title: "promhttp-error"},
 	}
 	http.Handle("/metrics", promhttp.HandlerFor(reg, promServerOpts))
+	if os.Getenv("EXPOSE_RAW_DATA") != "" {
+		setupDebugRoutes(s)
+	}
+
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 
 	log.Println("ecs-task-metadata-exporter exited without error")
@@ -111,4 +115,35 @@ func mustGetECSMetadataURI() string {
 		return uri
 	}
 	panic(fmt.Errorf("couldn't detect ECS metadata endpoint (tried env vars %s and %s)", ECSMetadataURIV4Var, ECSMetadataURIV3Var))
+}
+
+func setupDebugRoutes(source data.Source) {
+	http.Handle("/_debug/metadata", http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+		res.Header().Set("Content-Type", "application/json")
+		metadata, err := source.Metadata()
+		if err != nil {
+			res.WriteHeader(http.StatusInternalServerError)
+			res.Write([]byte(fmt.Sprintf(`{"error": "getting metadata from source: %s"}`, err)))
+		}
+		metadataBytes, err := json.Marshal(metadata)
+		if err != nil {
+			res.WriteHeader(http.StatusInternalServerError)
+			res.Write([]byte(fmt.Sprintf(`{"error": "marshalling metadata: %s"}`, err)))
+		}
+		res.Write(metadataBytes)
+	}))
+	http.Handle("/_debug/stats", http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+		res.Header().Set("Content-Type", "application/json")
+		stats, err := source.Stats()
+		if err != nil {
+			res.WriteHeader(http.StatusInternalServerError)
+			res.Write([]byte(fmt.Sprintf(`{"error": "getting stats from source: %s"}`, err)))
+		}
+		statsBytes, err := json.Marshal(stats)
+		if err != nil {
+			res.WriteHeader(http.StatusInternalServerError)
+			res.Write([]byte(fmt.Sprintf(`{"error": "marshalling stats: %s"}`, err)))
+		}
+		res.Write(statsBytes)
+	}))
 }

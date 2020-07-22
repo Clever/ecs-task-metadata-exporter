@@ -36,6 +36,7 @@ Configuration is in the form of environment variables, as they are easy to provi
 
 - `PORT`: sets the port on which it will listen for HTTP GET requests to the `/metrics` endpoint. The default is 9659, as listed on https://github.com/prometheus/prometheus/wiki/Default-port-allocations .
 - `ADDITIONAL_LOG_FIELDS`: add key:value pairs to the logs emitted. It should be valid JSON with values strings. If it is invalid, it will be ignored with a warning. It can be useful for configuring with information about the container it is being deployed with, for example.
+- `EXPOSE_RAW_DATA`: Setting this to a nonempty value enables additional endpoints `/_debug/metadata` and `/_debug/stats` which expose the ECS metadata `/task` and `/task/stats` respectively.
 
 ## Developing
 
