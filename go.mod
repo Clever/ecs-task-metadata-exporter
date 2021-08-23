@@ -1,6 +1,6 @@
 module github.com/Clever/ecs-task-metadata-exporter
 
-go 1.13
+go 1.16
 
 require (
 	github.com/containerd/containerd v1.3.4 // indirect
