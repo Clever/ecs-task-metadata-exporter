@@ -2,9 +2,9 @@ version: 2.1
 
 executors:
   common-executor:
-    working_directory: /go/src/github.com/Clever/ecs-task-metadata-exporter
+    working_directory: ~/go/src/github.com/Clever/ecs-task-metadata-exporter
     docker:
-    - image: circleci/golang:1.16
+    - image: cimg/go:1.16
     environment:
       CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
       CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
@@ -25,14 +25,14 @@ jobs:
     - run: make install_deps
     - run: make build
     - persist_to_workspace:
-        root: /go/src/github.com/Clever
+        root: ~/go/src/github.com/Clever
         paths: "."
 
   publish:
     executor: common-executor
     steps:
     - attach_workspace:
-        at: /go/src/github.com/Clever
+        at: ~/go/src/github.com/Clever
     - clone-ci-scripts
     - setup_remote_docker
     - run: ../ci-scripts/circleci/docker-publish $DOCKER_USER $DOCKER_PASS "$DOCKER_EMAIL" $DOCKER_ORG
@@ -42,7 +42,7 @@ jobs:
     executor: common-executor
     steps:
     - attach_workspace:
-        at: /go/src/github.com/Clever
+        at: ~/go/src/github.com/Clever
     - run:
         command: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
         name: Set up CircleCI artifacts directories
