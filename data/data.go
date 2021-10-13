@@ -87,7 +87,7 @@ func (m metadataEndpointSource) Metadata() (TaskMetadata, error) {
 		return ret, fmt.Errorf("reading task metadata response body: %v", err)
 	}
 	if resp.StatusCode != 200 {
-		return ret, fmt.Errorf("got non-success status code %d from task metadata endpoint with response body: %s", resp.StatusCode, string(body))
+		return ret, fmt.Errorf("got non-success status code %d from task metadata endpoint %s with response body: %s", resp.StatusCode, taskEndpoint, string(body))
 	}
 
 	if err := json.Unmarshal(body, &ret); err != nil {
@@ -109,7 +109,7 @@ func (m metadataEndpointSource) Stats() (map[string]types.StatsJSON, error) {
 		return ret, fmt.Errorf("reading task stats response body: %v", err)
 	}
 	if resp.StatusCode != 200 {
-		return ret, fmt.Errorf("got non-success status code %d from task stats endpoint with response body: %s", resp.StatusCode, string(body))
+		return ret, fmt.Errorf("got non-success status code %d from task stats endpoint %s with response body: %s", resp.StatusCode, taskEndpoint, string(body))
 	}
 
 	if err := json.Unmarshal(body, &ret); err != nil {
