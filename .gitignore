@@ -12,3 +12,4 @@ bin
 
 # don't commit mocks
 mock_*.go
+.git/
