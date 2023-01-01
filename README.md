@@ -42,3 +42,4 @@ Configuration is in the form of environment variables, as they are easy to provi
 If you run locally with `make run`, a mock ECS metadata endpoint will be set to run and listen on port `8912`, and the exporter will be run normally but looking to `http://localhost:8912` instead of looking for a real ECS metadata endpoint. The mock endpoint just returns contant data, but it be can tuned to your use case for testing and developing locally.
 
 There is a small test suite. `make test` runs `go test` and also lints and vets.
+test
