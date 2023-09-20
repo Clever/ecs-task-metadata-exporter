@@ -39,7 +39,7 @@ func TestMetadataEndpointSource(t *testing.T) {
 			AvailabilityZone:   swag.String("us-east-2b"),
 			ExecutionStoppedAt: time.Time{},
 			Containers: []ContainerMetadata{
-				ContainerMetadata{
+				{
 					DockerID:   "731a0d6a3b4210e2448339bc7015aaa79bfe4fa256384f4102db86ef94cbbc4c",
 					Name:       "~internal~ecs~pause",
 					DockerName: "ecs-nginx-5-internalecspause-acc699c0cbf2d6d11700",
@@ -57,7 +57,7 @@ func TestMetadataEndpointSource(t *testing.T) {
 					StartedAt:     mustParseTime(time.RFC3339, "2018-02-01T20:55:09.058354915Z"),
 					Type:          "CNI_PAUSE",
 				},
-				ContainerMetadata{
+				{
 					DockerID:   "43481a6ce4842eec8fe72fc28500c6b52edcc0917f105b83379f88cac1ff3946",
 					Name:       "nginx-curl",
 					DockerName: "ecs-nginx-5-nginx-curl-ccccb9f49db0dfe0d901",
@@ -88,23 +88,23 @@ func TestMetadataEndpointSource(t *testing.T) {
 		t.Fatalf("got error from stats(): %v", err)
 	} else {
 		expectedStats := map[string]types.StatsJSON{
-			"43481a6ce4842eec8fe72fc28500c6b52edcc0917f105b83379f88cac1ff3946": types.StatsJSON{
+			"43481a6ce4842eec8fe72fc28500c6b52edcc0917f105b83379f88cac1ff3946": {
 				Stats: types.Stats{
 					Read:    mustParseTime(time.RFC3339, "2020-04-06T16:12:01.090148907Z"),
 					PreRead: mustParseTime(time.RFC3339, "2020-04-06T16:11:56.083890951Z"),
 					BlkioStats: types.BlkioStats{
 						IoServiceBytesRecursive: []types.BlkioStatEntry{
-							types.BlkioStatEntry{Major: 202, Minor: 26368, Op: "Read", Value: 3452928},
-							types.BlkioStatEntry{Major: 202, Minor: 26368, Op: "Write", Value: 0},
-							types.BlkioStatEntry{Major: 202, Minor: 26368, Op: "Sync", Value: 3452928},
-							types.BlkioStatEntry{Major: 202, Minor: 26368, Op: "Async", Value: 0},
-							types.BlkioStatEntry{Major: 202, Minor: 26368, Op: "Total", Value: 3452928}},
+							{Major: 202, Minor: 26368, Op: "Read", Value: 3452928},
+							{Major: 202, Minor: 26368, Op: "Write", Value: 0},
+							{Major: 202, Minor: 26368, Op: "Sync", Value: 3452928},
+							{Major: 202, Minor: 26368, Op: "Async", Value: 0},
+							{Major: 202, Minor: 26368, Op: "Total", Value: 3452928}},
 						IoServicedRecursive: []types.BlkioStatEntry{
-							types.BlkioStatEntry{Major: 202, Minor: 26368, Op: "Read", Value: 118},
-							types.BlkioStatEntry{Major: 202, Minor: 26368, Op: "Write", Value: 0},
-							types.BlkioStatEntry{Major: 202, Minor: 26368, Op: "Sync", Value: 118},
-							types.BlkioStatEntry{Major: 202, Minor: 26368, Op: "Async", Value: 0},
-							types.BlkioStatEntry{Major: 202, Minor: 26368, Op: "Total", Value: 118}},
+							{Major: 202, Minor: 26368, Op: "Read", Value: 118},
+							{Major: 202, Minor: 26368, Op: "Write", Value: 0},
+							{Major: 202, Minor: 26368, Op: "Sync", Value: 118},
+							{Major: 202, Minor: 26368, Op: "Async", Value: 0},
+							{Major: 202, Minor: 26368, Op: "Total", Value: 118}},
 						IoQueuedRecursive:      []types.BlkioStatEntry{},
 						IoServiceTimeRecursive: []types.BlkioStatEntry{},
 						IoWaitTimeRecursive:    []types.BlkioStatEntry{},
@@ -177,7 +177,7 @@ func TestMetadataEndpointSource(t *testing.T) {
 				Name: "query-metadata",
 				ID:   "1823e1f6-7248-43c3-bed6-eea1fa7501a5query-metadata",
 				Networks: map[string]types.NetworkStats{
-					"eth1": types.NetworkStats{
+					"eth1": {
 						RxBytes:   564655295,
 						RxPackets: 384960,
 						RxErrors:  0,
